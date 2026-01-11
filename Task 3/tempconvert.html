@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Temperature Converter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .phone {
+      width: 360px;
+      background:#1e293b;
+      border-radius: 24px;
+      padding: 25px 20px 30px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .time {
+      text-align: left;
+      font-size: 14px;
+      color:#e5e7eb;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      color: white;
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 20px;
+    }
+
+    .row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .field {
+      flex: 1;
+    }
+
+    label {
+      font-size: 13px;
+      color:#94a3b8;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: none;
+       color: #0ea5e9;
+  background: transparent;
+      border-bottom: 1px solid #334155;
+      padding: 8px 0;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .result {
+      margin-top: 20px;
+    }
+
+    .result-value {
+      color: white;
+      font-size: 18px;
+      margin-top: 8px;
+    }
+
+    .btn {
+      margin-top: 30px;
+      width: 100%;
+      background:#38bdf8;
+      color:#020617 ;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #0ea5e9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="phone">
+    <div class="time" id="time"></div>
+
+    <h2>Temperature converter</h2>
+
+
+    <div class="row">
+  <div class="field">
+    <label>Degrees</label>
+    <input type="number" id="degrees">
+  </div>
+
+  <div class="field">
+    <label>From</label>
+    <select id="from">
+      <option value="" selected disabled hidden>Select</option>
+      <option value="c">Celsius</option>
+      <option value="f">Fahrenheit</option>
+      <option value="k">Kelvin</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>To</label>
+    <select id="to">
+      <option value="" selected disabled hidden>Select</option>
+      <option value="c">Celsius</option>
+      <option value="f">Fahrenheit</option>
+      <option value="k">Kelvin</option>
+    </select>
+  </div>
+</div>
+
+
+    <div class="result">
+      <label>Result</label>
+      <div class="result-value" id="result"></div>
+    </div>
+
+    <button class="btn" onclick="convertTemp()">Convert</button>
+  </div>
+
+  <script>
+    
+function convertTemp() {
+  const value = parseFloat(document.getElementById("degrees").value);
+  const from = document.getElementById("from").value;
+  const to = document.getElementById("to").value;
+  const result = document.getElementById("result");
+
+  if (isNaN(value)) {
+    result.textContent = "Enter a value";
+    return;
+  }
+
+  if (!from || !to) {
+    result.textContent = "Select both types";
+    return;
+  }
+
+  if (from === to) {
+    result.textContent = value.toFixed(4) + " (Same unit)";
+    return;
+  }
+
+  let celsius;
+
+  if (from === "c") celsius = value;
+  else if (from === "f") celsius = (value - 32) * 5 / 9;
+  else if (from === "k") celsius = value - 273.15;
+
+  let finalValue;
+
+  if (to === "c") finalValue = celsius;
+  else if (to === "f") finalValue = (celsius * 9 / 5) + 32;
+  else if (to === "k") finalValue = celsius + 273.15;
+
+  const unit = to === "c" ? "°C" : to === "f" ? "°F" : "K";
+result.textContent = finalValue.toFixed(4) + " " + unit;
+
+}
+</script>
+
+  <script>
+  function updateTime() {
+    const options = {
+      timeZone: "Asia/Kolkata",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true
+    };
+
+    document.getElementById("time").textContent =
+      new Date().toLocaleTimeString("en-IN", options);
+  }
+
+  updateTime();                 
+  setInterval(updateTime, 1000); 
+</script>
+
+
+</body>
+</html>
